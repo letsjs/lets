@@ -1,0 +1,35 @@
+{
+  "name": "lets",
+  "version": "0.0.0",
+  "description": "The simple server deployment and task automation tool",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "deploy",
+    "deployment",
+    "server",
+    "task",
+    "automation"
+  ],
+  "author": "Andreas Hultgren",
+  "license": "MIT",
+  "dependencies": {
+    "async": "~0.2.9",
+    "async-eventemitter": "~0.2.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "mocha": "~1.16.2",
+    "should": "~3.1.2",
+    "sinon": "~1.7.3",
+    "grunt-cli": "~0.1.13",
+    "grunt-simple-mocha": "~0.4.0"
+  }
+}
