@@ -18,4 +18,5 @@ module.exports = function (lets) {
   testing = lets.addStage('testing', test.stageConfig);
 
   testing.on('test', test.onTest);
+  testing.addServer(test.serverConfig);
 };

@@ -23,6 +23,12 @@ exports.stageConfig = {
   branch: 'test'
 };
 
+exports.serverConfig = {
+  host: 'localhost',
+  username: 'root',
+  password: '******'
+};
+
 
 /* Lets test stuff!
 ============================================================================= */
@@ -36,7 +42,18 @@ describe('Stage "testing"', function () {
   });
 
   it('should have the correct options set', function () {
-    config._stages.testing._options.should.have.properties(exports.stageConfig);
+    config._stages.testing._options.should.eql(exports.stageConfig);
+  });
+
+  it('should have a server added', function () {
+    config._stages.testing._servers.length.should.equal(1);
+  });
+
+  describe('\'s first server', function () {
+    it('should have the correct options set', function () {
+      config._stages.testing._servers[0]._options
+        .should.have.properties(exports.serverConfig);
+    });
   });
 });
 
