@@ -13,18 +13,16 @@ var test = require('./test');
 
 
 module.exports = function (lets) {
-  var testing,
-      testing2;
+  var testing;
 
   // Test stage 1, using servers
   testing = lets.addStage('testing', test.stageConfig);
 
-  testing.on('test', test.onTest);
-  testing.addServer(test.serverConfigs[0]);
-  testing.addServer(test.serverConfigs[1]);
+  testing.on('test', test.onTest)
+    .addServer(test.serverConfigs[0])
+    .addServer(test.serverConfigs[1]);
 
   // Test stage 2, not using servers
-  testing2 = lets.addStage('testing2', test.stageConfig);
-
-  testing2.on('test', test.onTest2);
+  lets.addStage('testing2', test.stageConfig)
+    .on('test', test.onTest2);
 };
