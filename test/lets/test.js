@@ -27,6 +27,11 @@ exports.onTest2 = sinon.spy(function (options) {
 });
 
 
+exports.globalConfig = {
+  applicationName: 'Test',
+  branch: 'master'
+};
+
 exports.stageConfig = {
   deployPath: '/var/lets/testApp',
   branch: 'test'
@@ -53,6 +58,12 @@ exports.serverConfigs = [
 
 // Run the config setup
 config = lets.load(Letsfile);
+
+describe('the global config object', function () {
+  describe('should have the correct options set', function () {
+    config._options.should.eql(exports.globalConfig);
+  });
+});
 
 describe('Stage "testing"', function () {
   it('should have been added to the config object', function () {
@@ -90,8 +101,8 @@ describe('After tasks are run on Stage "testing",', function () {
 
     it('was emitted with the right options', function () {
       onTestOptions.forEach(function (options, i) {
-        options.should.eql(
-          utils.extend({}, exports.stageConfig, exports.serverConfigs[i]));
+        options.should.eql(utils.extend({},
+          exports.globalConfig, exports.stageConfig, exports.serverConfigs[i]));
       });
     });
   });
@@ -109,7 +120,8 @@ describe('After tasks are run on Stage "testing2",', function () {
     });
 
     it('was emitted with the right options', function () {
-      onTestOptions2[0].should.eql(utils.extend({}, exports.stageConfig));
+      onTestOptions2[0].should.eql(utils.extend(
+        {}, exports.globalConfig, exports.stageConfig));
     });
   });
 });

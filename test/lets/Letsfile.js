@@ -15,6 +15,8 @@ var test = require('./test');
 module.exports = function (lets) {
   var testing;
 
+  lets.config(test.globalConfig);
+
   // Test stage 1, using servers
   testing = lets.addStage('testing', test.stageConfig);
 
