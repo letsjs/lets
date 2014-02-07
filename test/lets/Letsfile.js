@@ -20,7 +20,10 @@ module.exports = function (lets) {
   // Test stage 1, using servers
   testing = lets.addStage('testing', test.stageConfig);
 
-  testing.on('test', test.onTest)
+  testing
+    .on('test', test.onTest)
+    .pre('test', test.onTestPre)
+    .post('test', test.onTestPost)
     .addServer(test.serverConfigs[0])
     .addServer(test.serverConfigs[1]);
 

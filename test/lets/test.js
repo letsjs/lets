@@ -22,6 +22,9 @@ exports.onTest = sinon.spy(function (options) {
   onTestOptions.push(options);
 });
 
+exports.onTestPre = sinon.spy();
+exports.onTestPost = sinon.spy();
+
 exports.onTest2 = sinon.spy(function (options) {
   onTestOptions2.push(options);
 });
@@ -104,6 +107,20 @@ describe('After tasks are run on Stage "testing",', function () {
         options.should.eql(utils.extend({},
           exports.globalConfig, exports.stageConfig, exports.serverConfigs[i]));
       });
+    });
+  });
+
+  describe('the "test.pre" event', function () {
+    it('was emitted once per server', function () {
+      exports.onTestPre.callCount
+        .should.equal(config._stages.testing._servers.length);
+    });
+  });
+
+  describe('the "test.post" event', function () {
+    it('was emitted once per server', function () {
+      exports.onTestPost.callCount
+        .should.equal(config._stages.testing._servers.length);
     });
   });
 });
