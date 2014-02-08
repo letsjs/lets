@@ -18,16 +18,20 @@ module.exports = function (lets) {
   lets.config(test.globalConfig);
 
   // Test stage 1, using servers
-  testing = lets.addStage('testing', test.stageConfig);
+  testing = new lets.Stage(test.stageConfig);
 
   testing
     .on('test', test.onTest)
     .pre('test', test.onTestPre)
     .post('test', test.onTestPost)
-    .addServer(test.serverConfigs[0])
-    .addServer(test.serverConfigs[1]);
+    .addServer(new lets.Server(test.serverConfigs[0]))
+    .addServer(lets.Server(test.serverConfigs[1]));
+
+  lets.addStage('testing', testing);
+
 
   // Test stage 2, not using servers
-  lets.addStage('testing2', test.stageConfig)
-    .on('test', test.onTest2);
+  lets
+    .addStage('testing2', lets.Stage(test.stageConfig)
+      .on('test', test.onTest2));
 };
