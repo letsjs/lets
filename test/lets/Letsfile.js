@@ -25,7 +25,9 @@ module.exports = function (lets) {
     .pre('test', test.onTestPre)
     .post('test', test.onTestPost)
     .addServer(new lets.Server(test.serverConfigs[0]))
-    .addServer(lets.Server(test.serverConfigs[1]));
+    .addServer(lets.Server()
+      .config(test.serverConfigs[1])
+      .on('test', test.onServerTest));
 
   lets.addStage('testing', testing);
 

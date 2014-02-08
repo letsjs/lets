@@ -24,6 +24,7 @@ exports.onTest = sinon.spy(function (options) {
 
 exports.onTestPre = sinon.spy();
 exports.onTestPost = sinon.spy();
+exports.onServerTest = sinon.spy();
 
 exports.onTest2 = sinon.spy(function (options) {
   onTestOptions2.push(options);
@@ -100,6 +101,8 @@ describe('After tasks are run on Stage "testing",', function () {
     it('was emitted once per server', function () {
       exports.onTest.callCount
         .should.equal(config._stages.testing._servers.length);
+
+      exports.onServerTest.callCount.should.equal(1);
     });
 
     it('was emitted with the right options', function () {
