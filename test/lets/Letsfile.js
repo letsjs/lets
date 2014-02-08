@@ -32,6 +32,7 @@ module.exports = function (lets) {
 
   // Test stage 2, not using servers
   lets
-    .addStage('testing2', lets.Stage(test.stageConfig)
+    .addStage('testing2', lets.Stage()
+      .config(test.stageConfig)
       .on('test', test.onTest2));
 };
