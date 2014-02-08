@@ -3,6 +3,14 @@
   "version": "0.0.0",
   "description": "The simple server deployment and task automation tool",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/letsjs/lets.git"
+  },
+  "homepage": "https://github.com/letsjs/lets",
+  "bugs": {
+    "url": "https://github.com/letsjs/lets/issues"
+  },
   "scripts": {
     "test": "grunt test"
   },
@@ -16,18 +24,18 @@
   "author": "Andreas Hultgren",
   "license": "MIT",
   "dependencies": {
-    "async": "~0.2.9",
-    "async-eventemitter": "~0.2.0",
-    "lodash": "~2.4.1"
+    "async": "^0.2.9",
+    "async-eventemitter": "^0.2.0",
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-watch": "~0.5.3",
-    "mocha": "~1.16.2",
-    "should": "~3.1.2",
-    "sinon": "~1.7.3",
-    "grunt-cli": "~0.1.13",
-    "grunt-simple-mocha": "~0.4.0"
+    "grunt": "^0.4.2",
+    "grunt-contrib-jshint": "^0.8.0",
+    "grunt-contrib-watch": "^0.5.3",
+    "mocha": "^1.16.2",
+    "should": "^3.1.2",
+    "sinon": "^1.7.3",
+    "grunt-cli": "^0.1.13",
+    "grunt-simple-mocha": "^0.4.0"
   }
 }
