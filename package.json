@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "description": "The simple server deployment and task automation tool",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "grunt test"
   },
@@ -20,7 +17,8 @@
   "license": "MIT",
   "dependencies": {
     "async": "~0.2.9",
-    "async-eventemitter": "~0.2.0"
+    "async-eventemitter": "~0.2.0",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
