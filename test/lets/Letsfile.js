@@ -17,6 +17,8 @@ module.exports = function (lets) {
 
   lets.config(test.globalConfig);
 
+  lets.pre('test', test.preConfigTest);
+
   // Test stage 1, using servers
   testing = new lets.Stage(test.stageConfig);
 

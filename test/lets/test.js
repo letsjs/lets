@@ -14,8 +14,14 @@ var should = require('should'),
 /* Mocks and reference variables
 ============================================================================= */
 
-var onTestOptions = [],
-  onTestOptions2 = [];
+var preConfigTestOptions = [],
+    onTestOptions = [],
+    onTestOptions2 = [];
+
+exports.preConfigTest = sinon.spy(function (options) {
+  // Expose options so they can be tested
+  preConfigTestOptions.push(options);
+});
 
 exports.onTest = sinon.spy(function (options) {
   // Expose options so they can be tested
@@ -63,8 +69,8 @@ exports.serverConfigs = [
 // Run the config setup
 config = lets.load(Letsfile);
 
-describe('the global config object', function () {
-  describe('should have the correct options set', function () {
+describe('The global config object', function () {
+  it('should have the correct options set', function () {
     config._options.should.eql(exports.globalConfig);
   });
 });
@@ -142,6 +148,19 @@ describe('After tasks are run on Stage "testing2",', function () {
     it('was emitted with the right options', function () {
       onTestOptions2[0].should.eql(utils.extend(
         {}, exports.globalConfig, exports.stageConfig));
+    });
+  });
+});
+
+describe('After the tasks are run on both Stages,', function () {
+  describe('the "test" event', function () {
+    it('was emitted twice', function () {
+      exports.preConfigTest.callCount.should.equal(2);
+    });
+
+    it('was emitted with the right options', function () {
+      preConfigTestOptions[0].should.eql(utils.extend(
+        {}, exports.globalConfig));
     });
   });
 });
