@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./lib/lets');
+module.exports = exports = require('./lib/lets');
