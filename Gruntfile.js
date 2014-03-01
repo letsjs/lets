@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(grunt) {
-  var files = ['Gruntfile.js', 'package.json', 'index.js', 'lib/*.js', 'test/**.js'];
+  var files = ['Gruntfile.js', 'package.json', 'index.js', 'lib/**/*.js', 'test/**/*.js'];
 
   grunt.initConfig({
     jshint: {

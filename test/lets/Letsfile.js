@@ -7,9 +7,8 @@
  * due to the async nature of it()s and sync nature of lets.
  */
 
-/*global it:true, describe:true*/
-
-var test = require('./test');
+var test = require('./test'),
+    testPlugin = require('./plugin');
 
 
 module.exports = function (lets) {
@@ -23,6 +22,7 @@ module.exports = function (lets) {
   testing = new lets.Stage(test.stageConfig);
 
   testing
+    .plugin(testPlugin.test(test.pluginConfig))
     .on('test', test.onTest)
     .pre('test', test.onTestPre)
     .post('test', test.onTestPost)

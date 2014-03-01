@@ -1,9 +1,9 @@
 'use strict';
 
-/*global it:true, describe:true*/
+/*global it:true, describe:true, before:true*/
 /*jshint unused:false*/
 
-var 
+var
     chai = require('chai'),
     expect = chai.expect,
     sinon = require('sinon'),
@@ -42,6 +42,8 @@ exports.onTest2 = sinon.spy(function (options) {
   onTestOptions2.push(options);
 });
 
+exports.pluginOnTest = sinon.spy();
+
 
 exports.globalConfig = {
   applicationName: 'Test',
@@ -67,6 +69,11 @@ exports.serverConfigs = [
     password: '******'
   }
 ];
+
+exports.pluginConfig = {
+  branch: 'pluginBranch',
+  pluginSpecific: 'test'
+};
 
 
 /* Lets test stuff!
@@ -136,6 +143,20 @@ describe('After tasks are run on Stage "testing",', function () {
     it('was emitted once per server', function () {
       exports.onTestPost.callCount
         .should.equal(config._stages.testing._servers.length);
+    });
+  });
+
+  describe('the testPlugin\'s options', function () {
+    it('were called', function () {
+      exports.pluginOnTest.callCount
+        .should.equal(config._stages.testing._servers.length);
+
+      exports.pluginOnTest.firstCall
+        .should.have.been.calledWithExactly(
+          utils.extend({},
+            exports.globalConfig, exports.stageConfig,
+            exports.serverConfigs[0], exports.pluginConfig),
+          sinon.match.func);
     });
   });
 });
