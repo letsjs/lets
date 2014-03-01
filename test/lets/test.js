@@ -3,12 +3,18 @@
 /*global it:true, describe:true*/
 /*jshint unused:false*/
 
-var should = require('should'),
+var 
+    chai = require('chai'),
+    expect = chai.expect,
     sinon = require('sinon'),
+    sinonChai = require('sinon-chai'),
     lets = require('../../.'),
     utils = require('../../lib/utils'),
     Letsfile = require('./Letsfile'),
     config;
+
+chai.should();
+chai.use(sinonChai);
 
 
 /* Mocks and reference variables

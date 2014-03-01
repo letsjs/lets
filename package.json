@@ -33,9 +33,10 @@
     "grunt-contrib-jshint": "^0.8.0",
     "grunt-contrib-watch": "^0.5.3",
     "mocha": "^1.16.2",
-    "should": "^3.1.2",
     "sinon": "^1.7.3",
     "grunt-cli": "^0.1.13",
-    "grunt-simple-mocha": "^0.4.0"
+    "grunt-mocha-test": "^0.9.3",
+    "sinon-chai": "^2.5.0",
+    "chai": "^1.9.0"
   }
 }

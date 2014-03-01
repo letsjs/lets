@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    simplemocha: {
+    mochaTest: {
       options: {
         globals: ['should']
       },
@@ -58,10 +58,10 @@ module.exports = function(grunt) {
 
   // npm tasks
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('test', ['jshint:sloppy', 'simplemocha', 'jshint:strict']);
+  grunt.registerTask('test', ['jshint:sloppy', 'mochaTest', 'jshint:strict']);
   grunt.registerTask('default', ['test', 'watch']);
 };
