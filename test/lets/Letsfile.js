@@ -39,4 +39,11 @@ module.exports = function (lets) {
     .addStage('testing2', lets.Stage()
       .config(test.stageConfig)
       .on('test', test.onTest2));
+
+
+  // Test stage 3, not using servers, callbacks an error
+  lets
+    .addStage('testing3', lets.Stage()
+      .config(test.stageConfig)
+      .on('test', test.onTest3));
 };

@@ -42,6 +42,10 @@ exports.onTest2 = sinon.spy(function (options) {
   onTestOptions2.push(options);
 });
 
+exports.onTest3 = function (_, next) {
+  next(new Error('This is an error'));
+};
+
 exports.pluginOnTest = sinon.spy();
 
 
@@ -74,6 +78,10 @@ exports.pluginConfig = {
   branch: 'pluginBranch',
   pluginSpecific: 'test'
 };
+
+
+// Prevent the error event from exiting the process
+lets.logger.on('error', function () {});
 
 
 /* Lets test stuff!
@@ -188,6 +196,25 @@ describe('After the tasks are run on both Stages,', function () {
     it('was emitted with the right options', function () {
       preConfigTestOptions[0].should.eql(utils.extend(
         {}, exports.globalConfig));
+    });
+  });
+});
+
+describe('After tasks are run on Stage "testing3",', function () {
+  describe('lets.runTasks', function () {
+    before(function () {
+      lets.logger.error = sinon.spy();
+    });
+
+    it('callbacked an error', function (next) {
+      lets.runTasks(config, 'test', 'testing3', function (err) {
+        err.should.be.instanceOf(Error);
+        next();
+      });
+    });
+
+    it('logged the error', function () {
+      var _ = lets.logger.error.should.have.been.calledOnce;
     });
   });
 });
