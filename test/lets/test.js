@@ -228,3 +228,7 @@ describe('After tasks are run on Stage "testing3",', function () {
     });
   });
 });
+
+
+// Run additional tests
+require('./connection');
