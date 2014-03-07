@@ -22,16 +22,22 @@ chai.use(sinonChai);
 
 var preConfigTestOptions = [],
     onTestOptions = [],
-    onTestOptions2 = [];
+    onTestOptions2 = [],
+    callOrderTest = sinon.spy();
 
 exports.preConfigTest = sinon.spy(function (options) {
   // Expose options so they can be tested
   preConfigTestOptions.push(options);
 });
 
-exports.onTest = sinon.spy(function (options) {
+exports.onTest = sinon.spy(function (options, next) {
   // Expose options so they can be tested
   onTestOptions.push(options);
+
+  setTimeout(function () {
+    callOrderTest();
+    next();
+  }, 100);
 });
 
 exports.onTestPre = sinon.spy();
@@ -166,6 +172,10 @@ describe('After tasks are run on Stage "testing",', function () {
             exports.serverConfigs[0], exports.pluginConfig),
           sinon.match.func);
     });
+  });
+
+  it('the tasks were run in order', function () {
+    callOrderTest.should.have.been.calledBefore(exports.onTest);
   });
 });
 
