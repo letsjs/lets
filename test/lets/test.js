@@ -144,6 +144,13 @@ describe('After tasks are run on Stage "testing",', function () {
           exports.globalConfig, exports.stageConfig, exports.serverConfigs[i]));
       });
     });
+
+    it('was emitted with the right context', function () {
+      onTestOptions.forEach(function (_, i) {
+        exports.onTest.thisValues[i].should.equal(
+          config._stages.testing._servers[i]);
+      });
+    });
   });
 
   describe('the "test.pre" event', function () {
@@ -160,8 +167,8 @@ describe('After tasks are run on Stage "testing",', function () {
     });
   });
 
-  describe('the testPlugin\'s options', function () {
-    it('were called', function () {
+  describe('the testPlugin', function () {
+    it('was called with the right options', function () {
       exports.pluginOnTest.callCount
         .should.equal(config._stages.testing._servers.length);
 
@@ -171,6 +178,11 @@ describe('After tasks are run on Stage "testing",', function () {
             exports.globalConfig, exports.stageConfig,
             exports.serverConfigs[0], exports.pluginConfig),
           sinon.match.func);
+    });
+
+    it('was called with the right context', function () {
+      exports.pluginOnTest.thisValues[0].should.equal(
+        config._stages.testing._servers[0]);
     });
   });
 

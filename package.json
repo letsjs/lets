@@ -25,7 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^0.2.9",
-    "async-eventemitter": "^0.2.0",
+    "async-eventemitter": "^0.2.1",
     "lodash": "^2.4.1"
   },
   "devDependencies": {
