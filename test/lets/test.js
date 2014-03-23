@@ -55,6 +55,18 @@ exports.onTest3 = function (_, next) {
 exports.pluginOnTest = sinon.spy();
 
 
+// Flow test spies
+exports.onFirst = sinon.spy();
+exports.onConnect = sinon.spy();
+exports.onDeployStart = sinon.spy();
+exports.onDeployUpdate = sinon.spy();
+exports.onDeploy = sinon.spy();
+exports.onDeployPublish = sinon.spy();
+exports.onDeployFinish = sinon.spy();
+exports.onDisonnect = sinon.spy();
+exports.onLast = sinon.spy();
+
+
 exports.globalConfig = {
   applicationName: 'Test',
   branch: 'master'
@@ -125,7 +137,7 @@ describe('Stage "testing"', function () {
   });
 });
 
-describe('After tasks are run on Stage "testing",', function () {
+describe('After "test" tasks are run on Stage "testing",', function () {
   before(function (done) {
     lets.runTasks(config, 'test', 'testing', done);
   });
@@ -191,7 +203,7 @@ describe('After tasks are run on Stage "testing",', function () {
   });
 });
 
-describe('After tasks are run on Stage "testing2",', function () {
+describe('After "test" tasks are run on Stage "testing2",', function () {
   before(function (done) {
     lets.runTasks(config, 'test', 'testing2', done);
   });
@@ -209,7 +221,7 @@ describe('After tasks are run on Stage "testing2",', function () {
   });
 });
 
-describe('After the tasks are run on both Stages,', function () {
+describe('After "test" tasks are run on both Stages,', function () {
   describe('the "test" event', function () {
     it('was emitted twice', function () {
       exports.preConfigTest.callCount.should.equal(2);
@@ -222,7 +234,7 @@ describe('After the tasks are run on both Stages,', function () {
   });
 });
 
-describe('After tasks are run on Stage "testing3",', function () {
+describe('After "test" tasks are run on Stage "testing3",', function () {
   describe('lets.runTasks', function () {
     before(function () {
       lets.logger.error = sinon.spy();
@@ -239,6 +251,64 @@ describe('After tasks are run on Stage "testing3",', function () {
       var _ = lets.logger.error.should.have.been.calledOnce;
     });
   });
+});
+
+describe('After "deploy" task have been run on Stage "testing2,"', function () {
+  var deployFlow = [
+    exports.onFirst,
+    exports.onConnect,
+    exports.onDeployStart,
+    exports.onDeployUpdate,
+    exports.onDeploy,
+    exports.onDeployPublish,
+    exports.onDeployFinish,
+    exports.onDisonnect,
+    exports.onLast
+  ],
+  deployFlowNames = [
+    'first',
+    'connect',
+    'deploy:start',
+    'deploy:update',
+    'deploy',
+    'deploy:publish',
+    'deploy:finish',
+    'disconect',
+    'last'
+  ], i, l;
+
+  before(function (done) {
+    lets.runTasks(config, 'deploy', 'testing2', done);
+  });
+
+  // Automate flow test specification
+  deployFlow.forEach(function (task, i) {
+    describe('the "' + deployFlowNames[i] + '" task', function () {
+      it('should have been called once', function () {
+        task.should.have.callCount(1);
+      });
+
+      if(i > 0) {
+        it('should have been called after "' + deployFlowNames[i - 1] + '"', function () {
+          task.should.have.been.calledAfter(
+            deployFlow[i - 1]);
+        });
+      }
+
+      if(i + 1 < deployFlow.length) {
+        it('should have been called before "' + deployFlowNames[i + 1] + '"', function () {
+          task.should.have.been.calledBefore(
+            deployFlow[i + 1]);
+        });
+      }
+    });
+  });
+/*
+  describe('the "connect" task', function () {
+    it('should have been called once', function () {
+      exports.onConnect.should.have.callCount(1);
+    });
+  });*/
 });
 
 

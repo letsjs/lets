@@ -38,7 +38,19 @@ module.exports = function (lets) {
   lets
     .addStage('testing2', lets.Stage()
       .config(test.stageConfig)
-      .on('test', test.onTest2));
+      .on('test', test.onTest2)
+
+      // Testing deploy flow
+      .on('first', test.onFirst)
+      .on('connect', test.onConnect)
+      .on('deploy:start', test.onDeployStart)
+      .on('deploy:update', test.onDeployUpdate)
+      .on('deploy', test.onDeploy)
+      .on('deploy:publish', test.onDeployPublish)
+      .on('deploy:finish', test.onDeployFinish)
+      .on('disconnect', test.onDisonnect)
+      .on('last', test.onLast)
+    );
 
 
   // Test stage 3, not using servers, callbacks an error
