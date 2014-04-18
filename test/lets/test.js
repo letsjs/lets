@@ -303,12 +303,6 @@ describe('After "deploy" task have been run on Stage "testing2,"', function () {
       }
     });
   });
-/*
-  describe('the "connect" task', function () {
-    it('should have been called once', function () {
-      exports.onConnect.should.have.callCount(1);
-    });
-  });*/
 });
 
 
