@@ -246,10 +246,6 @@ describe('After "test" tasks are run on Stage "testing3",', function () {
         next();
       });
     });
-
-    it('logged the error', function () {
-      var _ = lets.logger.error.should.have.been.calledOnce;
-    });
   });
 });
 
