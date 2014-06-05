@@ -78,7 +78,8 @@ describe('lets.flows', function () {
     describe('existing flow without error', function () {
       it('should get an empty array', function () {
         /*jshint expr:true*/
-        lets.flows.getError('deploy')
+        lets.flows.add('empty', []);
+        lets.flows.getError('empty')
           .should.be.instanceOf(Array)
           .and.be.empty;
       });
