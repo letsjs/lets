@@ -304,3 +304,4 @@ describe('After "deploy" task have been run on Stage "testing2,"', function () {
 
 // Run additional tests
 require('./connection');
+require('./flows');
