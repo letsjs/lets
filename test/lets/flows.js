@@ -16,6 +16,8 @@ var testFlow = ['test:1', 'test:2'];
 var existingFlow = 'existing';
 var nonExistingFlow = 'non-existing';
 
+testFlow.error = ['test:error1', 'test:error1'];
+
 
 /* Tests
 ============================================================================= */
@@ -61,6 +63,31 @@ describe('lets.flows', function () {
           .to.throw(TypeError);
         expect(lets.flows.add.bind(lets.flows, ''))
           .to.throw(TypeError);
+      });
+    });
+  });
+
+  describe('.getError()', function () {
+    describe('existing flow with error', function () {
+      it('should get the error flow', function () {
+        lets.flows.getError(existingFlow)
+          .should.have.length(testFlow.error.length * 3);
+      });
+    });
+
+    describe('existing flow without error', function () {
+      it('should get an empty array', function () {
+        /*jshint expr:true*/
+        lets.flows.getError('deploy')
+          .should.be.instanceOf(Array)
+          .and.be.empty;
+      });
+    });
+
+    describe('non-existing flow', function () {
+      it('should throw', function () {
+        expect(lets.flows.getError.bind(lets.flows, nonExistingFlow))
+          .to.throw('Cannot get error-flow for non-existing flow ' + nonExistingFlow);
       });
     });
   });
