@@ -7,12 +7,17 @@
  * due to the async nature of it()s and sync nature of lets.
  */
 
-var test = require('./test'),
-    testPlugin = require('./plugin');
+var test = require('./test');
+var testPlugin = require('./plugin');
+var Lets = require('lets');
 
 
 module.exports = function (lets) {
   var testing;
+  var test3Flow = ['test'];
+  test3Flow.error = ['test:abort'];
+
+  Lets.flows.add('test', test3Flow);
 
   lets.config(test.globalConfig);
 
@@ -57,5 +62,6 @@ module.exports = function (lets) {
   lets
     .addStage('testing3', lets.Stage()
       .config(test.stageConfig)
-      .on('test', test.onTest3));
+      .on('test', test.onTest3)
+      .on('test:abort', test.onTest3Error));
 };
