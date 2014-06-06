@@ -48,9 +48,11 @@ exports.onTest2 = sinon.spy(function (options) {
   onTestOptions2.push(options);
 });
 
+exports.onTest3Error = sinon.spy();
 exports.onTest3 = function (_, next) {
   next(new Error('This is an error'));
 };
+
 
 exports.pluginOnTest = sinon.spy();
 
@@ -246,6 +248,11 @@ describe('After "test" tasks are run on Stage "testing3",', function () {
         next();
       });
     });
+
+    it('ran the error flow', function () {
+      /*jshint expr:true*/
+      exports.onTest3Error.should.have.been.calledOnce;
+    });
   });
 });
 
@@ -304,3 +311,4 @@ describe('After "deploy" task have been run on Stage "testing2,"', function () {
 
 // Run additional tests
 require('./connection');
+require('./flows');
