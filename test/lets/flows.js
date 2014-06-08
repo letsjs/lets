@@ -13,6 +13,8 @@ var expect = require('chai').expect;
 var lets = require('../../.');
 
 var testFlow = ['test:1', 'test:2'];
+var extraTask = 'test:3';
+var extraTask2 = 'test:4';
 var existingFlow = 'existing';
 var nonExistingFlow = 'non-existing';
 
@@ -89,6 +91,36 @@ describe('lets.flows', function () {
       it('should throw', function () {
         expect(lets.flows.getError.bind(lets.flows, nonExistingFlow))
           .to.throw('Cannot get error-flow for non-existing flow ' + nonExistingFlow);
+      });
+    });
+  });
+
+  describe('.after()', function () {
+    it('should be chainable', function () {
+      lets.flows.after(testFlow[1], extraTask).should.equal(lets.flows);
+    });
+
+    describe('for existing event', function () {
+      // (Added above)
+      it('should add the new event after the target event', function () {
+        var flow = lets.flows.get(existingFlow);
+
+        flow.indexOf(extraTask).should.be.greaterThan(-1);
+        flow.indexOf(extraTask + '.pre').should.be.greaterThan(-1);
+        flow.indexOf(extraTask + '.post').should.be.greaterThan(-1);
+      });
+    });
+
+    describe('for existing event again', function () {
+      it('should add the new event after the existing event', function () {
+        lets.flows.after(testFlow[1], extraTask2);
+
+        var flow = lets.flows.get(existingFlow);
+
+        flow.indexOf(extraTask2).should.be.greaterThan(-1)
+          .and.greaterThan(flow.indexOf(extraTask));
+        flow.indexOf(extraTask2 + '.pre').should.be.greaterThan(-1);
+        flow.indexOf(extraTask2 + '.post').should.be.greaterThan(-1);
       });
     });
   });
