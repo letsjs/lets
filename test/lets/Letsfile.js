@@ -64,4 +64,7 @@ module.exports = function (lets) {
       .config(test.stageConfig)
       .on('test', test.onTest3)
       .on('test:abort', test.onTest3Error));
+
+  // Not tested, but shows that Config#flows proxies lets.flows
+  lets.flows.after('deploy:finish', 'deploy:cleanup');
 };
