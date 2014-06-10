@@ -8,7 +8,6 @@
  */
 
 var test = require('./test');
-var testPlugin = require('./plugin');
 var Lets = require('lets');
 
 
@@ -27,7 +26,7 @@ module.exports = function (lets) {
   testing = new lets.Stage(test.stageConfig);
 
   testing
-    .plugin(testPlugin.test(test.pluginConfig))
+    .plugin(test.plugin(test.pluginConfig))
     .on('test', test.onTest)
     .pre('test', test.onTestPre)
     .post('test', test.onTestPost)

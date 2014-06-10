@@ -54,7 +54,9 @@ exports.onTest3 = function (_, next) {
 };
 
 
+exports.plugin = require('./plugin').test;
 exports.pluginOnTest = sinon.spy();
+var testablePluginCallback = require('./plugin').testableCallback;
 
 
 // Flow test spies
@@ -182,7 +184,12 @@ describe('After "test" tasks are run on Stage "testing",', function () {
   });
 
   describe('the testPlugin', function () {
-    it('was called with the right options', function () {
+    it('was called options as second argument', function () {
+      testablePluginCallback.should.have.been.calledWithMatch(
+        sinon.match(config._stages.testing), sinon.match(exports.pluginConfig));
+    });
+
+    it('listeners were called with the right options', function () {
       exports.pluginOnTest.callCount
         .should.equal(config._stages.testing._servers.length);
 
