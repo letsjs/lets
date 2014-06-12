@@ -89,10 +89,6 @@ exports.pluginConfig = {
 };
 
 
-// Prevent the error event from exiting the process
-lets.logger.on('error', function () {});
-
-
 /* Lets test stuff!
 ============================================================================= */
 
