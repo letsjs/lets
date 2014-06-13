@@ -80,6 +80,12 @@ exports.serverConfigs = [
     host: 'localhost:1337',
     username: 'root',
     password: '******'
+  },
+  {
+    branch: 'test4',
+    host: 'localhost:1337',
+    username: 'root',
+    password: '******'
   }
 ];
 
