@@ -8,7 +8,6 @@
  */
 
 var test = require('./test');
-var testPlugin = require('./plugin');
 var Lets = require('lets');
 
 
@@ -27,14 +26,15 @@ module.exports = function (lets) {
   testing = new lets.Stage(test.stageConfig);
 
   testing
-    .plugin(testPlugin.test(test.pluginConfig))
+    .plugin(test.plugin(test.pluginConfig))
     .on('test', test.onTest)
     .pre('test', test.onTestPre)
     .post('test', test.onTestPost)
     .addServer(new lets.Server(test.serverConfigs[0]))
     .addServer(lets.Server()
       .config(test.serverConfigs[1])
-      .on('test', test.onServerTest));
+      .on('test', test.onServerTest))
+    .addServer(test.serverConfigs[2]);
 
   lets.addStage('testing', testing);
 
@@ -64,6 +64,12 @@ module.exports = function (lets) {
       .config(test.stageConfig)
       .on('test', test.onTest3)
       .on('test:abort', test.onTest3Error));
+
+
+  // Not tested, just try adding a stage as a plain oject
+  lets.addStage('testing4', {
+    host: ''
+  });
 
   // Not tested, but shows that Config#flows proxies lets.flows
   lets.flows.after('deploy:finish', 'deploy:cleanup');

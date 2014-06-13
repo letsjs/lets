@@ -20,33 +20,20 @@ chai.use(sinonChai);
 /* Mocks and reference variables
 ============================================================================= */
 
-var preConfigTestOptions = [],
-    onTestOptions = [],
-    onTestOptions2 = [],
-    callOrderTest = sinon.spy();
-
-exports.preConfigTest = sinon.spy(function (options) {
-  // Expose options so they can be tested
-  preConfigTestOptions.push(options);
-});
+var callOrderTest = sinon.spy();
 
 exports.onTest = sinon.spy(function (options, next) {
-  // Expose options so they can be tested
-  onTestOptions.push(options);
-
   setTimeout(function () {
     callOrderTest();
     next();
   }, 100);
 });
 
+exports.preConfigTest = sinon.spy();
 exports.onTestPre = sinon.spy();
 exports.onTestPost = sinon.spy();
 exports.onServerTest = sinon.spy();
-
-exports.onTest2 = sinon.spy(function (options) {
-  onTestOptions2.push(options);
-});
+exports.onTest2 = sinon.spy();
 
 exports.onTest3Error = sinon.spy();
 exports.onTest3 = function (_, next) {
@@ -54,7 +41,9 @@ exports.onTest3 = function (_, next) {
 };
 
 
+exports.plugin = require('./plugin').test;
 exports.pluginOnTest = sinon.spy();
+var testablePluginCallback = require('./plugin').testableCallback;
 
 
 // Flow test spies
@@ -91,6 +80,12 @@ exports.serverConfigs = [
     host: 'localhost:1337',
     username: 'root',
     password: '******'
+  },
+  {
+    branch: 'test4',
+    host: 'localhost:1337',
+    username: 'root',
+    password: '******'
   }
 ];
 
@@ -98,10 +93,6 @@ exports.pluginConfig = {
   branch: 'pluginBranch',
   pluginSpecific: 'test'
 };
-
-
-// Prevent the error event from exiting the process
-lets.logger.on('error', function () {});
 
 
 /* Lets test stuff!
@@ -153,16 +144,15 @@ describe('After "test" tasks are run on Stage "testing",', function () {
     });
 
     it('was emitted with the right options', function () {
-      onTestOptions.forEach(function (options, i) {
-        options.should.eql(utils.extend({},
+      exports.onTest.args.forEach(function (args, i) {
+        args[0].should.eql(utils.extend({},
           exports.globalConfig, exports.stageConfig, exports.serverConfigs[i]));
       });
     });
 
     it('was emitted with the right context', function () {
-      onTestOptions.forEach(function (_, i) {
-        exports.onTest.thisValues[i].should.equal(
-          config._stages.testing._servers[i]);
+      config._stages.testing._servers.forEach(function (server) {
+        exports.onTest.should.have.been.calledOn(server);
       });
     });
   });
@@ -182,7 +172,12 @@ describe('After "test" tasks are run on Stage "testing",', function () {
   });
 
   describe('the testPlugin', function () {
-    it('was called with the right options', function () {
+    it('was called width options as second argument', function () {
+      testablePluginCallback.should.have.been.calledWithMatch(
+        sinon.match(config._stages.testing), sinon.match(exports.pluginConfig));
+    });
+
+    it('listeners were called with the right options', function () {
       exports.pluginOnTest.callCount
         .should.equal(config._stages.testing._servers.length);
 
@@ -195,8 +190,9 @@ describe('After "test" tasks are run on Stage "testing",', function () {
     });
 
     it('was called with the right context', function () {
-      exports.pluginOnTest.thisValues[0].should.equal(
-        config._stages.testing._servers[0]);
+      config._stages.testing._servers.forEach(function (server) {
+        exports.pluginOnTest.should.have.been.calledOn(server);
+      });
     });
   });
 
@@ -217,8 +213,10 @@ describe('After "test" tasks are run on Stage "testing2",', function () {
     });
 
     it('was emitted with the right options', function () {
-      onTestOptions2[0].should.eql(utils.extend(
-        {}, exports.globalConfig, exports.stageConfig));
+      exports.onTest2.args.forEach(function (args, i) {
+        args[0].should.eql(utils.extend({},
+          exports.globalConfig, exports.stageConfig));
+      });
     });
   });
 });
@@ -230,8 +228,10 @@ describe('After "test" tasks are run on both Stages,', function () {
     });
 
     it('was emitted with the right options', function () {
-      preConfigTestOptions[0].should.eql(utils.extend(
-        {}, exports.globalConfig));
+      exports.preConfigTest.args.forEach(function (args, i) {
+        args[0].should.eql(utils.extend({},
+          exports.globalConfig));
+      });
     });
   });
 });
