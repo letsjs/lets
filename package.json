@@ -1,6 +1,6 @@
 {
   "name": "lets",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "The simple server deployment and task automation tool",
   "main": "index.js",
   "repository": {
